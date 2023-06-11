@@ -1,0 +1,26 @@
+# Use Alpine Linux as the base image
+FROM alpine:latest
+
+# Install required packages
+RUN apk add --no-cache influxdb
+
+# Expose the InfluxDB port
+EXPOSE 8086
+
+# Set the InfluxDB data directory
+ENV INFLUXDB_DATA_DIR /var/lib/influxdb
+
+# Set the InfluxDB configuration directory
+ENV INFLUXDB_CONFIG_DIR /etc/influxdb
+
+# Set the InfluxDB configuration file
+ENV INFLUXDB_CONFIG_FILE /etc/influxdb/influxdb.conf
+
+# Create the InfluxDB data directory
+RUN mkdir -p $INFLUXDB_DATA_DIR
+
+# Copy the default InfluxDB configuration file
+COPY influxdb.conf $INFLUXDB_CONFIG_FILE
+
+# Start InfluxDB when the container starts
+CMD ["influxd"]
